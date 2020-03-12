@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 
-const Login = ({ navigation }) => {
+const AdminLogin = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,7 +27,7 @@ const Login = ({ navigation }) => {
     <>
       <View style={styles.container}>
 
-        <Text style={styles.header}>LOGIN</Text>
+        <Text style={styles.header}>ADMIN LOGIN</Text>
 
         <Input
           leftIcon={mailIcon}
@@ -60,8 +60,8 @@ const Login = ({ navigation }) => {
           onPress={() => onSubmit({ email, password })}
         />
 
-        <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('AdminLogin')}>
-          <Text style={styles.linkText}>Are you an admin? Press here.</Text>
+        <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.linkText}>Not an admin? Press here.</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+export default AdminLogin;
