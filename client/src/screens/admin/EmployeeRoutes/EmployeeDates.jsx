@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const EmployeeList = () => {
+const EmployeeDates = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>EmployeeList</Text>
+      <Text style={styles.header}>EmployeeDates Page</Text>
     </View>
   );
 }
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 50,
-  }
+  },
 });
 
-export default EmployeeList;
+export default EmployeeDates;
