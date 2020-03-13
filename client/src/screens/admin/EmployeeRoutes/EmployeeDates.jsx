@@ -1,10 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const EmployeeDates = () => {
+const EmployeeDates = ({ route, navigation }) => {
+  const { name, id } = route.params;
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>EmployeeDates Page</Text>
+      <Text style={styles.header}>Dates for: {name}</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('EmployeeDatesDetails', { name, id })}>
+        <Text>Go To Date Details</Text>
+      </TouchableOpacity>
     </View>
   );
 }

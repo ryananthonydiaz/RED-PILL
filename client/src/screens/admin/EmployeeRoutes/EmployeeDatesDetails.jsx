@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 const EmployeeDatesDetails = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>EmployeeDatesDetails Page</Text>
+      <Text style={styles.header}>Employee Dates Details Page</Text>
     </View>
   );
 }

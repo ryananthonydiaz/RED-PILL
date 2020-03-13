@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const EmployeeDetail = ({ route, navigation }) => {
   const { name, id } = route.params;
@@ -7,6 +7,9 @@ const EmployeeDetail = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Details for: {name}</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('EmployeeDates', { name, id })}>
+        <Text>Go To Dates</Text>
+      </TouchableOpacity>
     </View>
   );
 }
