@@ -15,7 +15,7 @@ const AdminLogin = ({ navigation }) => {
   );
 
   const onSubmit = () => {
-    navigation.navigate('UserDashboard');
+    navigation.navigate('AdminDashboard');
   }
 
   // let errorAlert;

@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const Home = () => {
+/**
+ * This page will show a list of Clock-In, Clock-Out
+ * 
+ */
+
+const LogForm = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>
-        HOME SCREEN
-      </Text>
+      <Text style={styles.header}>Log Form Page</Text>
     </View>
   );
 }
@@ -15,11 +18,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   header: {
     fontSize: 50,
   },
 });
 
-export default Home;
+export default LogForm;

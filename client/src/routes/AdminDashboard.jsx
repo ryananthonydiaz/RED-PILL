@@ -1,24 +1,25 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '../screens/employee/Home';
-import LogForm from '../screens/employee/timeCard/LogForm';
+import EmployeeList from '../screens/admin/Employee/EmployeeList';
+import Dashboard from '../screens/admin/dashboard/Dashboard';
 import Settings from '../screens/shared/Settings';
+
 
 const Tabs = createBottomTabNavigator();
 const { Navigator, Screen } = Tabs;
 
-const UserDashboard = () => {
+const AdminDashboard = () => {
   return (
     <Navigator>
-      <Screen name="Home" component={Home} />
-      <Screen name="LogForm" component={LogForm} />
+      <Screen name="EmployeeList" component={EmployeeList} />
+      <Screen name="Dashboard" component={Dashboard} />
       <Screen name="Settings" component={Settings} />
     </Navigator>
   );
 }
 
-export const UserDashboardOptions = {
+export const AdminDashboardOptions = {
   header: () => null,
 }
 
-export default UserDashboard;
+export default AdminDashboard;
