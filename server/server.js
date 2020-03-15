@@ -8,11 +8,12 @@ if (process.env.NODE_ENV !== 'production') {
 
 db();
 
-const app = express();
+const authRoutes = require('./routes/authRoutes');
 
-app.get('/', (req, res) => {
-  res.send('Yo bruh we good');
-});
+const app = express();
+app.use('/reddot/v1/auth', authRoutes);
+
+
 
 const PORT = process.env.PORT || 5000;
 
