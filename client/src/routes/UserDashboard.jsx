@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '../screens/employee/Home';
-import LogForm from '../screens/employee/timeCard/LogForm';
+import LogHistoryFlow from '../screens/employee/log/LogHistoryFlow';
+import LogFormFlow from '../screens/employee/timeCard/LogFormFlow';
 import Settings from '../screens/shared/Settings';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -14,7 +14,7 @@ const screenOptions = ({ route }) => ({
 
     if (route.name === 'Home') {
       iconName = focused ? 'ios-list-box' : 'ios-list';
-    } else if (route.name === 'LogForm') {
+    } else if (route.name === 'LogFormFlow') {
       iconName = focused ? 'clock' : 'clock-outline';
       return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
     } else {
@@ -33,8 +33,16 @@ const tabBarOptions={
 const UserDashboard = () => {
   return (
     <Navigator screenOptions={screenOptions} tabBarOptions={tabBarOptions}>
-      <Screen name="Home" component={Home} />
-      <Screen name="LogForm" component={LogForm} />
+      <Screen
+        name="LogHistoryFlow"
+        component={LogHistoryFlow}
+        options={{ tabBarLabel: 'Log History' }}
+      />
+      <Screen
+        name="LogFormFlow"
+        component={LogFormFlow}
+        options={{ tabBarLabel: 'Time Card' }}
+      />
       <Screen name="Settings" component={Settings} />
     </Navigator>
   );

@@ -1,6 +1,5 @@
 import React from 'react';
 import { SafeAreaView, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-// import { useFocusEffect } from '@react-navigation/native';
 import { ListItem } from 'react-native-elements';
 import data from '../../../json/data.json';
 
