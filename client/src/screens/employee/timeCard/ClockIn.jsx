@@ -1,38 +1,29 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  ActivityIndicator
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { _getLocation } from '../../../state/actions/LocationActions';
+import LoadLocationImage from '../../../assets/loadLocation';
 
-const ClockIn = () => {
+const ClockIn = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [buttonText, setButtonText] = useState('Clock In');
+  const [buttonText, setButtonText] = useState('Press to get your current location');
 
-  const _getLocation = async () => {
-    setLoading(true);
+  const logLocation = async () => {
+    navigation.navigate('some new location where map is full screen and asks user to submit location')
     setDisabled(true);
-
     try {
-      const { status } = await Permissions.askAsync(Permissions.LOCATION);
-
-      if (status !== 'granted') {
-        console.log('Permission denied');
-        setLoading(false);
-        return;
-      }
-  
-      const userLocation = await Location.getCurrentPositionAsync({});
-
-      // TODO: remove console.log()
-      console.log(userLocation);
-
-      setLoading(false);
-      setButtonText('Your Location is sent!');
-
-      return userLocation;
+      await dispatch(_getLocation());
     } catch (error) {
-      // TODO: Properly Error Handle Error case
-      console.log(error);
+      console.log(error)
     }
   }
 
@@ -48,12 +39,13 @@ const ClockIn = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
+      <LoadLocationImage />
       {spinner}
       <TouchableOpacity
         disabled={disabled}
         style={styles.button}
-        onPress={_getLocation}
+        onPress={logLocation}
       >
         <Text style={styles.buttonText}>{buttonText}</Text>
       </TouchableOpacity>

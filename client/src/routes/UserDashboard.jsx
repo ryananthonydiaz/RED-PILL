@@ -12,7 +12,7 @@ const screenOptions = ({ route }) => ({
   tabBarIcon: ({ focused, color, size }) => {
     let iconName;
 
-    if (route.name === 'Home') {
+    if (route.name === 'LogHistoryFlow') {
       iconName = focused ? 'ios-list-box' : 'ios-list';
     } else if (route.name === 'LogFormFlow') {
       iconName = focused ? 'clock' : 'clock-outline';
@@ -25,7 +25,7 @@ const screenOptions = ({ route }) => ({
   },
 });
 
-const tabBarOptions={
+const tabBarOptions = {
   activeTintColor: 'tomato',
   inactiveTintColor: 'gray',
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Map from '../../../components/Map';
 
 /**
  * 
@@ -12,9 +13,7 @@ import { View, Text, StyleSheet } from 'react-native';
 const LogDates = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>
-        Log Dates SCREEN
-      </Text>
+      <Text>Log Dates Component</Text>
     </View>
   );
 }

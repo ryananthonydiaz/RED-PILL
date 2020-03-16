@@ -1,38 +1,32 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
+import {
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { _getLocation } from '../../../state/actions/LocationActions';
+import Map from '../../../components/Map';
 
 const ClockOut = () => {
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [buttonText, setButtonText] = useState('Clock Out');
 
-  const _getLocation = async () => {
+  const logLocation = async () => {
+    console.log('logLocation() ran')
     setLoading(true);
     setDisabled(true);
-
     try {
-      const { status } = await Permissions.askAsync(Permissions.LOCATION);
-
-      if (status !== 'granted') {
-        console.log('Permission denied');
-        setLoading(false);
-        return;
-      }
-  
-      const userLocation = await Location.getCurrentPositionAsync({});
-
-      // TODO: remove console.log()
-      console.log(userLocation);
-
+      await dispatch(_getLocation());
       setLoading(false);
-      setButtonText('Your Location is sent!');
-
-      return userLocation;
+      setButtonText('You Location has been sent!');
     } catch (error) {
-      // TODO: Properly Error Handle Error case
-      console.log(error);
+      console.log(error)
     }
   }
 
@@ -49,6 +43,7 @@ const ClockOut = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Map />
       {spinner}
       <TouchableOpacity
         disabled={disabled}

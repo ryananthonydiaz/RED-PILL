@@ -5,6 +5,12 @@ import Login from '../screens/unAuth/Login';
 import AdminLogin from '../screens/unAuth/AdminLogin';
 import UserDashboard, { UserDashboardOptions } from './UserDashboard';
 import AdminDashboard, { AdminDashboardOptions } from './AdminDashboard';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+import rootReducer from '../state/reducers';
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -12,26 +18,36 @@ const { Navigator, Screen } = Stack;
 
 const Routes = () => {
   return (
-    <NavigationContainer>
-      <Navigator initialRouteName="Login">
-        <Screen name="Login" component={Login} options={{
-          header: () => null,
-        }} />
-        <Screen name="AdminLogin" component={AdminLogin} options={{
-          header: () => null,
-        }} />
-        <Screen
-          name="UserDashboard"
-          component={UserDashboard}
-          options={UserDashboardOptions}
-        />
-        <Screen
-          name="AdminDashboard"
-          component={AdminDashboard}
-          options={AdminDashboardOptions}
-        />
-      </Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Navigator initialRouteName="Login">
+          <Screen
+            name="Login"
+            component={Login}
+            options={{
+              header: () => null,
+            }}
+          />
+          <Screen
+            name="AdminLogin"
+            component={AdminLogin}
+            options={{
+              header: () => null,
+            }}
+          />
+          <Screen
+            name="UserDashboard"
+            component={UserDashboard}
+            options={UserDashboardOptions}
+          />
+          <Screen
+            name="AdminDashboard"
+            component={AdminDashboard}
+            options={AdminDashboardOptions}
+          />
+        </Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
