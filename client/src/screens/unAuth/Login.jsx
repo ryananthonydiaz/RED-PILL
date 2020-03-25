@@ -1,30 +1,15 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/react-hooks';
+import { loginMutation } from '../../apollo/server/MutationTags';
+import { AsyncStorage } from 'react-native';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-
 const Login = ({ navigation }) => {
-  const loginMutation = gql`
-    mutation LoginMutation($email: String!, $password: String!){
-      login(data: { email: $email, password: $password }){
-        user {
-          name
-          email
-          password
-          role
-        }
-        token
-      }
-    }
-  `;
-
-  const [ login, { loading, error } ] = useMutation(loginMutation);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [ login, { loading, error } ] = useMutation(loginMutation);
 
   const mailIcon = (
     <AntDesign name="mail" size={20} style={{ color: 'white', margin: 0}} />
@@ -34,12 +19,12 @@ const Login = ({ navigation }) => {
   );
 
   const onSubmit = async (email, password) => {
-    const data = await login({ variables: { email, password } });
-
-    if (data) {
-      console.log(data);
-    } else {
-      console.log(error)
+    try {
+      const { data: { login: { token, user } } } = await login({ variables: { email, password } });
+      await AsyncStorage.setItem('token', token);
+      navigation.navigate('UserDashboard')
+    } catch (error) {
+      console.log(error);
     }
   }
 

@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/react-hooks';
+import { adminLoginMutation } from '../../apollo/server/MutationTags';
+import { AsyncStorage } from 'react-native';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
@@ -6,22 +9,25 @@ import { AntDesign } from '@expo/vector-icons';
 const AdminLogin = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [adminLogin, {  }] = useMutation(adminLoginMutation);
+
+  const onSubmit = async (email, password) => {
+    try {
+      const { data: { adminLogin: { token, user } } } = await adminLogin({ variables: { email, password } });
+      await AsyncStorage.setItem('token', token);
+      navigation.navigate('AdminDashboard')
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const mailIcon = (
     <AntDesign name="mail" size={20} style={{ color: 'white', margin: 0}} />
   );
+
   const lockIcon = (
     <AntDesign name="lock" size={20} style={{ color: 'white', padding: 0 }} />
   );
-
-  const onSubmit = () => {
-    navigation.navigate('AdminDashboard');
-  }
-
-  // let errorAlert;
-  // if (errorMessage.length !== 0) {
-  //   errorAlert = <Text style={styles.errorMessage}>{errorMessage}</Text>
-  // }
 
   return (
     <>
@@ -57,7 +63,7 @@ const AdminLogin = ({ navigation }) => {
           title="Login"
           titleStyle={styles.buttonTitle}
           buttonStyle={styles.button}
-          onPress={() => onSubmit({ email, password })}
+          onPress={() => onSubmit(email, password)}
         />
 
         <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('Login')}>

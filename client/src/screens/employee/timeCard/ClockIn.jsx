@@ -6,8 +6,6 @@ import {
   TouchableOpacity,
   ActivityIndicator
 } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { _getLocation } from '../../../state/actions/LocationActions';
 import LoadLocationImage from '../../../assets/loadLocation';
 
 const ClockIn = ({ navigation }) => {

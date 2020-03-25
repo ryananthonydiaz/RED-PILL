@@ -4,10 +4,8 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { _getLocation } from '../../../state/actions/LocationActions';
 import Map from '../../../components/Map';
 
 const ClockOut = () => {

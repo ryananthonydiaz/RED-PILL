@@ -1,9 +1,11 @@
 import React from 'react';
+import { AsyncStorage } from 'react-native';
 import { SafeAreaView, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import HeroImage from '../../assets/settings.jsx';
 
 const Settings = ({ navigation }) => {
-  const _logOut = () => {
+  const _logOut = async () => {
+    await AsyncStorage.removeItem('token');
     navigation.navigate('Login');
   }
   return (
