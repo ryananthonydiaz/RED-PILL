@@ -3,7 +3,26 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
 const Login = ({ navigation }) => {
+  const loginMutation = gql`
+    mutation LoginMutation($email: String!, $password: String!){
+      login(data: { email: $email, password: $password }){
+        user {
+          name
+          email
+          password
+          role
+        }
+        token
+      }
+    }
+  `;
+
+  const [ login, { loading, error } ] = useMutation(loginMutation);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -14,14 +33,15 @@ const Login = ({ navigation }) => {
     <AntDesign name="lock" size={20} style={{ color: 'white', padding: 0 }} />
   );
 
-  const onSubmit = () => {
-    navigation.navigate('UserDashboard');
-  }
+  const onSubmit = async (email, password) => {
+    const data = await login({ variables: { email, password } });
 
-  // let errorAlert;
-  // if (errorMessage.length !== 0) {
-  //   errorAlert = <Text style={styles.errorMessage}>{errorMessage}</Text>
-  // }
+    if (data) {
+      console.log(data);
+    } else {
+      console.log(error)
+    }
+  }
 
   return (
     <>
@@ -57,7 +77,7 @@ const Login = ({ navigation }) => {
           title="Login"
           titleStyle={styles.buttonTitle}
           buttonStyle={styles.button}
-          onPress={() => onSubmit({ email, password })}
+          onPress={() => onSubmit(email, password)}
         />
 
         <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('AdminLogin')}>
