@@ -14,6 +14,7 @@ const AdminLogin = ({ navigation }) => {
   const onSubmit = async (email, password) => {
     try {
       const { data: { adminLogin: { token, user } } } = await adminLogin({ variables: { email, password } });
+      console.log(token)
       await AsyncStorage.setItem('token', token);
       navigation.navigate('AdminDashboard')
     } catch (error) {
@@ -69,6 +70,7 @@ const AdminLogin = ({ navigation }) => {
         <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('Login')}>
           <Text style={styles.linkText}>Not an admin? Press here.</Text>
         </TouchableOpacity>
+
       </View>
     </>
   );

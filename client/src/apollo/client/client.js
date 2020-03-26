@@ -1,17 +1,17 @@
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
+import ApolloClient from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { onError } from 'apollo-link-error';
 import { setContext } from 'apollo-link-context';
-import { withClientState } from 'apollo-link-state';
+// import { withClientState } from 'apollo-link-state';
 import { AsyncStorage } from 'react-native';
-import resolvers from './resolvers';
-import defaults from './Defaults';
+// import resolvers from './resolvers';
+// import defaults from './Defaults';
 
 const cache = new InMemoryCache();
-const stateLink = withClientState({ cache, resolvers, defaults });
+// const stateLink = withClientState({ cache, resolvers, defaults });
 
 const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   if (graphQLErrors) {
@@ -27,26 +27,23 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   }
 });
 
-const authLink = setContext((_, { headers, ...rest }) => {
-  return AsyncStorage.getItem('token', (error, result) => {
-    if (error) {
-      throw new Error(error);
-    }
+const authLink = setContext(async (_, { headers, ...rest }) => {
+  const token = await AsyncStorage.getItem('token');
 
-    return {
-      ...rest,
-      headers: {
-        ...headers,
-        authorization: `Bearer ${result}`
-      },
-    };
-  });
+  return {
+    ...rest,
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    }
+  }
 });
 
-const httpLink = new HttpLink({ uri: 'http://192.168.1.39:5000/' });
+const httpLink = authLink.concat(new HttpLink({ uri: 'http://192.168.1.39:5000/' }));
 
-const link = ApolloLink.from([errorLink, stateLink, authLink, httpLink]);
-
-const client = new ApolloClient({ cache, link });
+const client = new ApolloClient({
+  cache,
+  link: ApolloLink.from([errorLink, httpLink]),
+});
 
 export { ApolloProvider as default, client };

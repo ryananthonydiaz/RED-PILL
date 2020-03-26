@@ -1,40 +1,50 @@
 import React from 'react';
-import { SafeAreaView, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { usersQuery } from '../../../apollo/server/QueryTags';
+import { useQuery } from '@apollo/react-hooks';
+import { SafeAreaView, ActivityIndicator, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import data from '../../../json/data.json';
 
 const EmployeeList = ({ navigation }) => {
+  const { error, loading, data } = useQuery(usersQuery);
+  
+  let contentToDisplay = <ActivityIndicator size="large" color="fff" />
+  if (loading === false) {
+    console.log(data)
+    contentToDisplay = (
+      <FlatList
+      style={{ width: '100%' }}
+      data={data.users}
+      keyExtractor={(item) => item.id}
+      renderItem={
+        ({ item }) => {
+          return (
+            <TouchableOpacity
+              onPress={
+                () => {
+                  navigation.navigate('EmployeeDetail', {
+                    name: item.name,
+                    id: item.id,
+                  })
+                }
+              }
+            >
+              <ListItem
+                title={item.name}
+                titleStyle={styles.listTitle}
+                containerStyle={styles.listItem}
+                chevron
+              />
+            </TouchableOpacity>
+          );
+        }
+      }
+    />
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Choose An Employee</Text>
-      <FlatList
-        style={{ width: '100%' }}
-        data={data}
-        keyExtractor={(item) => item.id}
-        renderItem={
-          ({ item }) => {
-            return (
-              <TouchableOpacity
-                onPress={
-                  () => {
-                    navigation.navigate('EmployeeDetail', {
-                      name: item.name,
-                      id: item.id,
-                    })
-                  }
-                }
-              >
-                <ListItem
-                  title={item.name}
-                  titleStyle={styles.listTitle}
-                  containerStyle={styles.listItem}
-                  chevron
-                />
-              </TouchableOpacity>
-            );
-          }
-        }
-      />
+      {contentToDisplay}
     </SafeAreaView>
   );
 }
