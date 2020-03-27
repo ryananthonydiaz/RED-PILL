@@ -8,7 +8,7 @@ import Map from '../../../components/Map';
 const EmployeeDetail = ({ route }) => {
   const { name, locationId, formattedDate } = route.params;
 
-  const { error, loading, data } = useQuery(locationDetailQuery, { variables: { locationId: locationId } });
+  const { loading, data } = useQuery(locationDetailQuery, { variables: { locationId: locationId } });
 
   if (loading === true) {
     return (
@@ -42,7 +42,7 @@ const EmployeeDetail = ({ route }) => {
     <View style={styles.container}>
       <Text style={styles.header}>Time Sheet for:</Text>
       <Text style={styles.subHeader}>{formattedDate}</Text>
-      <Text>You {formattedType} at {time}</Text>
+      <Text>{name} {formattedType} at {time}</Text>
       {map}
     </View>
   );
