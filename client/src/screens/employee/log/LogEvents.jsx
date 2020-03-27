@@ -37,13 +37,13 @@ const LogEvents = ({ route, navigation }) => {
       ({ item }) => {
         let type;
         if (item.type === 'CLOCK_IN') {
-          type = 'Clock In';
+          type = 'Clock In Details';
         } else if (item.type === 'LUNCH_START') {
-          type = 'Lunch Start';
+          type = 'Lunch Start Details';
         } else if (item.type === 'LUNCH_END') {
-          type = 'Lunch End';
+          type = 'Lunch End Details';
         } else {
-          type = 'Clock Out';
+          type = 'Clock Out Details';
         }
 
         return (

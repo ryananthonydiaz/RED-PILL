@@ -10,7 +10,21 @@ const { Navigator, Screen } = Stack;
 
 const options = { header: () => null, headerTitle: 'Log Dates' };
 
-const LogHistoryFlow = ({ route }) => {
+const LogHistoryFlow = () => {
+  const options = {
+    headerTitle: '',
+    headerTintColor: '#c0392b',
+    headerStyle: {
+      backgroundColor: '#f2c9c5',
+    },
+    headerTitleStyle: {
+      fontSize: 15,
+      color: '#c0392b',
+      fontWeight: '100',
+    },
+    headerBackTitle: () => null,
+  }
+
   return (
     <Navigator >
       <Screen
@@ -21,12 +35,12 @@ const LogHistoryFlow = ({ route }) => {
       <Screen
         name="LogEvents"
         component={LogEvents}
-        options={{ headerTitle: 'Log Events' }}
+        options={options}
       />
       <Screen
         name="LogEventDetails"
         component={LogEventDetails}
-        options={{ headerTitle: 'Log Dates Details' }}
+        options={options}
       />
     </Navigator>
   );
