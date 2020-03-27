@@ -5,13 +5,13 @@ import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { onError } from 'apollo-link-error';
 import { setContext } from 'apollo-link-context';
-// import { withClientState } from 'apollo-link-state';
+import { withClientState } from 'apollo-link-state';
 import { AsyncStorage } from 'react-native';
-// import resolvers from './resolvers';
-// import defaults from './Defaults';
+import resolvers from './resolvers';
+import defaults from './Defaults';
 
 const cache = new InMemoryCache();
-// const stateLink = withClientState({ cache, resolvers, defaults });
+const stateLink = withClientState({ cache, resolvers, defaults });
 
 const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   if (graphQLErrors) {
@@ -43,7 +43,8 @@ const httpLink = authLink.concat(new HttpLink({ uri: 'http://192.168.1.39:5000/'
 
 const client = new ApolloClient({
   cache,
-  link: ApolloLink.from([errorLink, httpLink]),
+  link: ApolloLink.from([errorLink, stateLink, httpLink]),
+  resolvers: {},
 });
 
 export { ApolloProvider as default, client };

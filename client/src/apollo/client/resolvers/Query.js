@@ -1,6 +1,16 @@
+import gql from 'graphql-tag';
+
+const idQuery = gql`
+  query {
+    id @client
+  }
+`;
+
 const Query = {
-  someQuery: (parent, args, { cache }, info) => {
-    return null;
+  getId: (parent, args, { cache }, info) => {
+    const { id: userId } = cache.readQuery({ query: idQuery })
+
+    return userId;
   }
 };
 

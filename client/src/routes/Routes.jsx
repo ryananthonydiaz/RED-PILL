@@ -10,6 +10,10 @@ import ApolloProvider, { client } from '../apollo/client/client';
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
+const options = {
+  header: () => null,
+}
+
 const Routes = () => {
   return (
       <ApolloProvider client={client}>
@@ -18,16 +22,12 @@ const Routes = () => {
             <Screen
               name="Login"
               component={Login}
-              options={{
-                header: () => null,
-              }}
+              options={options}
             />
             <Screen
               name="AdminLogin"
               component={AdminLogin}
-              options={{
-                header: () => null,
-              }}
+              options={options}
             />
             <Screen
               name="UserDashboard"

@@ -6,10 +6,9 @@ import { ListItem } from 'react-native-elements';
 
 const EmployeeList = ({ navigation }) => {
   const { error, loading, data } = useQuery(usersQuery);
-  
-  let contentToDisplay = <ActivityIndicator size="large" color="fff" />
+
+  let contentToDisplay = <ActivityIndicator size="large" color="fff" />;
   if (loading === false) {
-    console.log(data)
     contentToDisplay = (
       <FlatList
       style={{ width: '100%' }}
@@ -21,7 +20,7 @@ const EmployeeList = ({ navigation }) => {
             <TouchableOpacity
               onPress={
                 () => {
-                  navigation.navigate('EmployeeDetail', {
+                  navigation.navigate('EmployeeDates', {
                     name: item.name,
                     id: item.id,
                   })

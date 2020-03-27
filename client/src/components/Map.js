@@ -5,7 +5,6 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import mapStyle from '../json/mapStyle.json';
 
 const Map = ({ employeeLocation }) => {
-  let location = employeeLocation;
   if (isNil(employeeLocation)) {
     location = {
       latitude: 37.78825,
@@ -13,13 +12,13 @@ const Map = ({ employeeLocation }) => {
     }
   }
   const region = {
-    ...location,
+    ...employeeLocation,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   };
 
   const centerOfMarker = {
-    ...location,
+    ...employeeLocation,
   }
 
   return (
@@ -34,7 +33,7 @@ const Map = ({ employeeLocation }) => {
         coordinate={centerOfMarker}
         title="Your Current Location"
       >
-        <Image source={require('../assets/idea.png')}         style={styles.image} />
+        <Image source={require('../assets/idea.png')} style={styles.image} />
       </Marker>
     </MapView>
   );
@@ -51,7 +50,6 @@ const styles = StyleSheet.create({
     width: 60,
     borderColor: '#fff',
     borderWidth: 1,
-    borderStyle: 'solid',
     borderRadius: 5,
   }
 });

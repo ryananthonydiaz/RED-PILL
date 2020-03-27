@@ -1,13 +1,6 @@
 const Mutation = {
-  someMutation: (parent, { args }, { cache }, info) => {
-    const data = {
-      dataName: {
-        args,
-        __typeName: 'Arguments',
-      }
-    };
-
-    cache.writeData({ data });
+  setId: (parent, { id }, { cache }, info) => {
+    cache.writeData({ data: { id } });
 
     return null;
   }

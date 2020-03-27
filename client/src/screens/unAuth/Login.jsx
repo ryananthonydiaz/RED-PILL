@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { loginMutation } from '../../apollo/server/MutationTags';
+import { useApolloClient } from '@apollo/react-hooks';
 import { AsyncStorage } from 'react-native';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
@@ -9,6 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const client = useApolloClient();
   const [ login, { loading, error } ] = useMutation(loginMutation);
 
   const mailIcon = (
@@ -22,7 +24,8 @@ const Login = ({ navigation }) => {
     try {
       const { data: { login: { token, user } } } = await login({ variables: { email, password } });
       await AsyncStorage.setItem('token', token);
-      navigation.navigate('UserDashboard')
+      client.writeData({ data: { id: token } });
+      navigation.navigate('UserDashboard');
     } catch (error) {
       console.log(error);
     }

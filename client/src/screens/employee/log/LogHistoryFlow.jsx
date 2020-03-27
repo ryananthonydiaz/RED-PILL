@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LogDates from './LogDates';
 import LogEvents from './LogEvents';
-import LogDetails from './LogDetails';
+import LogEventDetails from './LogEventDetails';
 
 
 const Stack = createStackNavigator();
@@ -10,7 +10,7 @@ const { Navigator, Screen } = Stack;
 
 const options = { header: () => null, headerTitle: 'Log Dates' };
 
-const LogHistoryFlow = () => {
+const LogHistoryFlow = ({ route }) => {
   return (
     <Navigator >
       <Screen
@@ -24,9 +24,9 @@ const LogHistoryFlow = () => {
         options={{ headerTitle: 'Log Events' }}
       />
       <Screen
-        name="LogDetails"
-        component={LogDetails}
-        options={{ headerTitle: 'Log Details' }}
+        name="LogEventDetails"
+        component={LogEventDetails}
+        options={{ headerTitle: 'Log Dates Details' }}
       />
     </Navigator>
   );
