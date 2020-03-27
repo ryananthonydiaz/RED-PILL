@@ -7,8 +7,6 @@ import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, StyleSheet }
 import { ListItem } from 'react-native-elements';
 
 const Log = ({ route, navigation }) => {
-  let contentToDisplay = <ActivityIndicator size="large" color="fff" />;
-
   const idQuery = gql`
     query {
       id @client
@@ -17,47 +15,56 @@ const Log = ({ route, navigation }) => {
 
   const { loading, data: { id: userId } } = useQuery(idQuery);
 
-  if (loading === false) {
-      const { error, loading: datesLoading, data } = useQuery(locationDatesQuery, { variables: { id: userId } } );
+  const { loading: datesLoading, data } = useQuery(
+    locationDatesQuery,
+    {
+      variables: { id: userId },
+    },
+    );
 
-      if (datesLoading === false) {
-        contentToDisplay = (
-          <FlatList
-          style={{ width: '100%' }}
-          data={data.locationDates}
-          keyExtractor={(item) => item}
-          renderItem={
-            ({ item }) => {
-              const [month, day, year] = item.split('-');
-              const title = format(
-                new Date(parseInt(year, 10), (parseInt(month, 10) - 1), parseInt(day, 10)),
-                'EEEE MMM dd, y',
-              );
-    
-              return (
-                <TouchableOpacity
-                  onPress={
-                    () => {
-                      navigation.navigate('LogEvents',
-                        { id: userId, date: item}
-                      )
-                    }
-                  }
-                >
-                  <ListItem
-                    title={title}
-                    titleStyle={styles.listTitle}
-                    containerStyle={styles.listItem}
-                    chevron
-                  />
-                </TouchableOpacity>
-              );
+    if (loading === true || datesLoading === true) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color="#fff" />
+        </View>
+      );
+    }
+
+  contentToDisplay = (
+    <FlatList
+    style={{ width: '100%' }}
+    data={data.locationDates}
+    keyExtractor={(item) => item}
+    renderItem={
+      ({ item }) => {
+        const [month, day, year] = item.split('-');
+        const title = format(
+          new Date(parseInt(year, 10), (parseInt(month, 10) - 1), parseInt(day, 10)),
+          'EEEE MMM dd, y',
+        );
+
+        return (
+          <TouchableOpacity
+            onPress={
+              () => {
+                navigation.navigate('LogEvents',
+                  { id: userId, date: item}
+                )
+              }
             }
-          }
-        />
+          >
+            <ListItem
+              title={title}
+              titleStyle={styles.listTitle}
+              containerStyle={styles.listItem}
+              chevron
+            />
+          </TouchableOpacity>
         );
       }
-  }
+    }
+  />
+  );
 
   return (
     <View style={styles.container}>

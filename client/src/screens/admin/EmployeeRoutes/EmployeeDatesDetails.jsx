@@ -21,7 +21,7 @@ const EmployeeDatesDetails = ({ route, navigation }) => {
   if (loading === true) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="fff" />
+        <ActivityIndicator size="large" color="#fff" />
       </View>
     );
   }

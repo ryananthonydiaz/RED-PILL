@@ -20,50 +20,54 @@ const LogEvents = ({ route, navigation }) => {
     'EEEE MMM dd, y',
   )
 
-  let contentToDisplay = <ActivityIndicator size="large" color="fff" />;
-  if (loading === false) {
-
-    contentToDisplay = (
-      <FlatList
-      style={{ width: '100%' }}
-      data={data.locationTypes}
-      keyExtractor={(item) => item.id}
-      renderItem={
-        ({ item }) => {
-          let type;
-          if (item.type === 'CLOCK_IN') {
-            type = 'Clock In';
-          } else if (item.type === 'LUNCH_START') {
-            type = 'Lunch Start';
-          } else if (item.type === 'LUNCH_END') {
-            type = 'Lunch End';
-          } else {
-            type = 'Clock Out';
-          }
-
-          return (
-            <TouchableOpacity
-              onPress={
-                () => {
-                  navigation.navigate('LogEventDetails',
-                    { locationId: item.id, formattedDate }
-                  )
-                }
-              }
-            >
-              <ListItem
-                title={type}
-                titleStyle={styles.listTitle}
-                containerStyle={styles.listItem}
-                chevron
-              />
-            </TouchableOpacity>
-          );
-        }
-      }
-    />
+  if (loading === true) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
     );
   }
+
+  contentToDisplay = (
+    <FlatList
+    style={{ width: '100%' }}
+    data={data.locationTypes}
+    keyExtractor={(item) => item.id}
+    renderItem={
+      ({ item }) => {
+        let type;
+        if (item.type === 'CLOCK_IN') {
+          type = 'Clock In';
+        } else if (item.type === 'LUNCH_START') {
+          type = 'Lunch Start';
+        } else if (item.type === 'LUNCH_END') {
+          type = 'Lunch End';
+        } else {
+          type = 'Clock Out';
+        }
+
+        return (
+          <TouchableOpacity
+            onPress={
+              () => {
+                navigation.navigate('LogEventDetails',
+                  { locationId: item.id, formattedDate }
+                )
+              }
+            }
+          >
+            <ListItem
+              title={type}
+              titleStyle={styles.listTitle}
+              containerStyle={styles.listItem}
+              chevron
+            />
+          </TouchableOpacity>
+        );
+      }
+    }
+  />
+  );
 
   return (
     <View style={styles.container}>
