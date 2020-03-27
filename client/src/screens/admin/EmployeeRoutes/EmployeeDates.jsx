@@ -9,44 +9,49 @@ const EmployeeDates = ({ route, navigation }) => {
   const { name, id } = route.params;
   const { error, loading, data } = useQuery(locationDatesQuery, { variables: { id: id } } );
 
-  let contentToDisplay = <ActivityIndicator size="large" color="fff" />;
-  if (loading === false) {
-    contentToDisplay = (
-      <FlatList
-      style={{ width: '100%' }}
-      data={data.locationDates}
-      keyExtractor={(item) => item}
-      renderItem={
-        ({ item }) => {
-          const [month, day, year] = item.split('-');
-          const title = format(
-            new Date(parseInt(year, 10), (parseInt(month, 10) - 1), parseInt(day, 10)),
-            'EEEE MMM dd, y',
-          );
-
-          return (
-            <TouchableOpacity
-              onPress={
-                () => {
-                  navigation.navigate('EmployeeDatesDetails',
-                    { name, id, date: item }
-                  )
-                }
-              }
-            >
-              <ListItem
-                title={title}
-                titleStyle={styles.listTitle}
-                containerStyle={styles.listItem}
-                chevron
-              />
-            </TouchableOpacity>
-          );
-        }
-      }
-    />
+  if (loading === true) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
     );
   }
+
+  contentToDisplay = (
+    <FlatList
+    style={{ width: '100%' }}
+    data={data.locationDates}
+    keyExtractor={(item) => item}
+    renderItem={
+      ({ item }) => {
+        const [month, day, year] = item.split('-');
+        const title = format(
+          new Date(parseInt(year, 10), (parseInt(month, 10) - 1), parseInt(day, 10)),
+          'EEEE MMM dd, y',
+        );
+
+        return (
+          <TouchableOpacity
+            onPress={
+              () => {
+                navigation.navigate('EmployeeDatesDetails',
+                  { name, id, date: item }
+                )
+              }
+            }
+          >
+            <ListItem
+              title={title}
+              titleStyle={styles.listTitle}
+              containerStyle={styles.listItem}
+              chevron
+            />
+          </TouchableOpacity>
+        );
+      }
+    }
+  />
+  );
 
   return (
     <View style={styles.container}>

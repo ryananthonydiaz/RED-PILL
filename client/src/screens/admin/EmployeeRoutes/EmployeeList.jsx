@@ -7,39 +7,45 @@ import { ListItem } from 'react-native-elements';
 const EmployeeList = ({ navigation }) => {
   const { error, loading, data } = useQuery(usersQuery);
 
-  let contentToDisplay = <ActivityIndicator size="large" color="fff" />;
-  if (loading === false) {
-    contentToDisplay = (
-      <FlatList
-      style={{ width: '100%' }}
-      data={data.users}
-      keyExtractor={(item) => item.id}
-      renderItem={
-        ({ item }) => {
-          return (
-            <TouchableOpacity
-              onPress={
-                () => {
-                  navigation.navigate('EmployeeDates', {
-                    name: item.name,
-                    id: item.id,
-                  })
-                }
-              }
-            >
-              <ListItem
-                title={item.name}
-                titleStyle={styles.listTitle}
-                containerStyle={styles.listItem}
-                chevron
-              />
-            </TouchableOpacity>
-          );
-        }
-      }
-    />
+  if (loading === true) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="fff" />
+      </View>
     );
   }
+
+  contentToDisplay = (
+    <FlatList
+    style={{ width: '100%' }}
+    data={data.users}
+    keyExtractor={(item) => item.id}
+    renderItem={
+      ({ item }) => {
+        return (
+          <TouchableOpacity
+            onPress={
+              () => {
+                navigation.navigate('EmployeeDates', {
+                  name: item.name,
+                  id: item.id,
+                })
+              }
+            }
+          >
+            <ListItem
+              title={item.name}
+              titleStyle={styles.listTitle}
+              containerStyle={styles.listItem}
+              chevron
+            />
+          </TouchableOpacity>
+        );
+      }
+    }
+  />
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Choose An Employee</Text>

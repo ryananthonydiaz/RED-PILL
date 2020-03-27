@@ -2,40 +2,47 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { locationDetailQuery } from '../../../apollo/server/QueryTags';
 import { format } from 'date-fns';
-import { ActivityIndicator, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 import Map from '../../../components/Map';
 
 const EmployeeDetail = ({ route }) => {
-  const { name, locationId, date } = route.params;
+  const { name, locationId, formattedDate } = route.params;
 
   const { error, loading, data } = useQuery(locationDetailQuery, { variables: { locationId: locationId } });
 
-  let map;
-  let time;
-  if (loading === false) {
-    console.log(data);
-    const location = {
-      latitude: parseFloat(data.locationDetail.latitude),
-      longitude: parseFloat(data.locationDetail.longitude),
-    }
-    map = (<Map employeeLocation={location} />);
-
-    const dateObject = new Date(parseInt(data.locationDetail.timestamp));
-    time = format(dateObject, 'h:mm a');
+  if (loading === true) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
+    );
   }
 
-  /**
-   * date
-   * latitude
-   * longitude
-   * timestamp
-   * type
-   */
+  const location = {
+    latitude: parseFloat(data.locationDetail.latitude),
+    longitude: parseFloat(data.locationDetail.longitude),
+  }
+  const map = (<Map employeeLocation={location} />);
+
+  const dateObject = new Date(parseInt(data.locationDetail.timestamp));
+  const time = format(dateObject, 'h:mm a');
+
+  let formattedType;
+  if (data.locationDetail.type === 'CLOCK_IN') {
+    formattedType = 'Clocked In';
+  } else if (data.locationDetail.type === 'LUNCH_START') {
+    formattedType = 'Started Lunch';
+  } else if (data.locationDetail.type === 'LUNCH_END') {
+    formattedType = 'Ended Lunch';
+  } else {
+    formattedType = 'Clocked Out';
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Details for: {name}</Text>
-      <Text>Location Details for {name} on {date} at {time}</Text>
+      <Text style={styles.header}>Time Sheet for:</Text>
+      <Text style={styles.subHeader}>{formattedDate}</Text>
+      <Text>You {formattedType} at {time}</Text>
       {map}
     </View>
   );

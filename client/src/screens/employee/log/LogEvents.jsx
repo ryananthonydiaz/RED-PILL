@@ -46,7 +46,7 @@ const LogEvents = ({ route, navigation }) => {
               onPress={
                 () => {
                   navigation.navigate('LogEventDetails',
-                    { locationId: item.id, formattedDate, type: item.type }
+                    { locationId: item.id, formattedDate }
                   )
                 }
               }

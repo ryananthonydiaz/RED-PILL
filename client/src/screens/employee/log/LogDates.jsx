@@ -61,7 +61,7 @@ const Log = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Dates for: </Text>
+      <Text style={styles.header}>Time Sheets</Text>
       {contentToDisplay}
     </View>
   );

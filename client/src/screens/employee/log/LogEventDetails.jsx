@@ -6,42 +6,40 @@ import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 import Map from '../../../components/Map';
 
 const LogEventDetails = ({ route, navigation }) => {
-  const { locationId, formattedDate, type } = route.params;
+  const { locationId, formattedDate } = route.params;
 
+  const { error, loading, data } = useQuery(locationDetailQuery, { variables: { locationId: locationId } });
+
+  if (loading === true) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
+    );
+  }
+
+  let map;
+  let time;
   let formattedType;
-  if (type === 'CLOCK_IN') {
+  const location = {
+    latitude: parseFloat(data.locationDetail.latitude),
+    longitude: parseFloat(data.locationDetail.longitude),
+  }
+
+  map = (<Map employeeLocation={location} />);
+
+  const dateObject = new Date(parseInt(data.locationDetail.timestamp));
+  time = format(dateObject, 'h:mm a');
+
+  if (data.locationDetail.type === 'CLOCK_IN') {
     formattedType = 'Clocked In';
-  } else if (type === 'LUNCH_START') {
+  } else if (data.locationDetail.type === 'LUNCH_START') {
     formattedType = 'Started Lunch';
-  } else if (type === 'LUNCH_END') {
+  } else if (data.locationDetail.type === 'LUNCH_END') {
     formattedType = 'Ended Lunch';
   } else {
     formattedType = 'Clocked Out';
   }
-
-  const { error, loading, data } = useQuery(locationDetailQuery, { variables: { locationId: locationId } });
-
-  let map;
-  let time;
-  if (loading === false) {
-    console.log(data);
-    const location = {
-      latitude: parseFloat(data.locationDetail.latitude),
-      longitude: parseFloat(data.locationDetail.longitude),
-    }
-    map = (<Map employeeLocation={location} />);
-
-    const dateObject = new Date(parseInt(data.locationDetail.timestamp));
-    time = format(dateObject, 'h:mm a');
-  }
-
-  /**
-   * date
-   * latitude
-   * longitude
-   * timestamp
-   * type
-   */
 
   return (
     <View style={styles.container}>
