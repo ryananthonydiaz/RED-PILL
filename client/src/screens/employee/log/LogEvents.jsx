@@ -8,7 +8,7 @@ import { ListItem } from 'react-native-elements';
 const LogEvents = ({ route, navigation }) => {
   const { params: { id, date } } = route;
   
-  const { error, loading, data } = useQuery(
+  const { loading, data } = useQuery(
     locationTypesQuery, {
       variables: { employeeId: id, date }
     }

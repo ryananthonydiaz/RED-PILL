@@ -5,11 +5,13 @@ import { ListItem } from 'react-native-elements';
 const LogFormOptions = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Logging Options</Text>
+      <Text style={styles.header}>Choose an Option</Text>
       <TouchableOpacity
         onPress={
           () => {
-            navigation.navigate('ClockIn');
+            navigation.navigate('TimeSheetForm', {
+              type: 'CLOCK_IN',
+            });
           }
         }
       >
@@ -23,7 +25,41 @@ const LogFormOptions = ({ navigation }) => {
     <TouchableOpacity
       onPress={
         () => {
-          navigation.navigate('ClockOut');
+          navigation.navigate('TimeSheetForm', {
+            type: 'LUNCH_START',
+          });
+        }
+      }
+    >
+      <ListItem
+        title="Start Lunch"
+        titleStyle={styles.listTitle}
+        containerStyle={styles.listItem}
+        chevron
+      />
+    </TouchableOpacity>
+    <TouchableOpacity
+      onPress={
+        () => {
+          navigation.navigate('TimeSheetForm', {
+            type: 'LUNCH_END',
+          });
+        }
+      }
+    >
+      <ListItem
+        title="End Lunch"
+        titleStyle={styles.listTitle}
+        containerStyle={styles.listItem}
+        chevron
+      />
+    </TouchableOpacity>
+    <TouchableOpacity
+      onPress={
+        () => {
+          navigation.navigate('TimeSheetForm', {
+            type: 'CLOCK_OUT',
+          });
         }
       }
     >

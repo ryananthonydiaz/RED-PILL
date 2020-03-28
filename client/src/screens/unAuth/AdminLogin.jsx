@@ -15,7 +15,7 @@ const AdminLogin = ({ navigation }) => {
     try {
       const { data: { adminLogin: { token, user } } } = await adminLogin({ variables: { email, password } });
       await AsyncStorage.setItem('token', token);
-      navigation.navigate('AdminDashboard')
+      navigation.navigate('AdminDashboard');
     } catch (error) {
       console.log(error);
     }

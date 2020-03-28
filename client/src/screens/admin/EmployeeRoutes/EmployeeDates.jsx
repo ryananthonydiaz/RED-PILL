@@ -1,7 +1,7 @@
 import React from 'react';
 import { locationDatesQuery } from '../../../apollo/server/QueryTags';
 import { useQuery } from '@apollo/react-hooks';
-import { format, parse } from 'date-fns';
+import { format } from 'date-fns';
 import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
 

@@ -1,30 +1,38 @@
 import React, { useState } from 'react';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 import {
-  SafeAreaView,
   Text,
-  TouchableOpacity,
   StyleSheet,
-  ActivityIndicator,
+  SafeAreaView,
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
-import Map from '../../../components/Map';
+import LoadLocationImage from '../../../assets/loadLocation';
 
-const ClockOut = () => {
-  const dispatch = useDispatch();
+const TimeSheetForm = ({ route, navigation }) => {
+  const { type } = route.params;
 
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [buttonText, setButtonText] = useState('Clock Out');
+  const [buttonText, setButtonText] = useState('Press to get your current location');
 
-  const logLocation = async () => {
-    console.log('logLocation() ran')
-    setLoading(true);
-    setDisabled(true);
+  const _getLocation = async () => {
+    console.log('_getLocation() ran')
     try {
-      await dispatch(_getLocation());
-      setLoading(false);
-      setButtonText('You Location has been sent!');
+      const { status } = await Permissions.askAsync(Permissions.LOCATION);
+  
+      if (status !== 'granted') {
+        console.log('Permission denied');
+        return;
+      }
+
+      const { coords } = await Location.getCurrentPositionAsync({});
+  
+      // TODO: remove console.log()
+      navigation.navigate('LocationConfirmation', { coords, type });
     } catch (error) {
-      console.log(error)
+      throw error;
     }
   }
 
@@ -40,8 +48,8 @@ const ClockOut = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Map />
+    <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
+      <LoadLocationImage />
       {spinner}
       <TouchableOpacity
         disabled={disabled}
@@ -83,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ClockOut;
+export default TimeSheetForm;

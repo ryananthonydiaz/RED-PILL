@@ -27,3 +27,19 @@ export const adminLoginMutation = gql`
     }
   }
 `;
+
+export const createLocationMutation = gql`
+  mutation CreateLocationMutation($type: LogType!, $latitude: Float!, $longitude: Float!){
+     createLocation(data: { type: $type, latitude: $latitude, longitude: $longitude }){
+       employee {
+         name
+       }
+       id
+       type
+       longitude
+       latitude
+       date
+       timestamp
+     }
+   }
+`;

@@ -15,12 +15,7 @@ const Log = ({ route, navigation }) => {
 
   const { loading, data: { id: userId } } = useQuery(idQuery);
 
-  const { loading: datesLoading, data } = useQuery(
-    locationDatesQuery,
-    {
-      variables: { id: userId },
-    },
-    );
+  const { loading: datesLoading, data } = useQuery(locationDatesQuery, { variables: { id: userId } });
 
     if (loading === true || datesLoading === true) {
       return (
@@ -68,7 +63,7 @@ const Log = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Time Sheets</Text>
+      <Text style={styles.header}>Submitted Time Sheets</Text>
       {contentToDisplay}
     </View>
   );

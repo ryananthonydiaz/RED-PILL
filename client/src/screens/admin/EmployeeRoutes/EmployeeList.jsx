@@ -5,13 +5,13 @@ import { SafeAreaView, ActivityIndicator, Text, FlatList, StyleSheet, TouchableO
 import { ListItem } from 'react-native-elements';
 
 const EmployeeList = ({ navigation }) => {
-  const { error, loading, data } = useQuery(usersQuery);
+  const { loading, data } = useQuery(usersQuery);
 
   if (loading === true) {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <ActivityIndicator size="large" color="#fff" />
-      </View>
+      </SafeAreaView>
     );
   }
 
