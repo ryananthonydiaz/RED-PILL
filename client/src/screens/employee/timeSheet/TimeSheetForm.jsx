@@ -6,19 +6,14 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  ActivityIndicator
 } from 'react-native';
 import LoadLocationImage from '../../../assets/loadLocation';
 
 const TimeSheetForm = ({ route, navigation }) => {
   const { type } = route.params;
 
-  const [loading, setLoading] = useState(false);
-  const [disabled, setDisabled] = useState(false);
-  const [buttonText, setButtonText] = useState('Press to get your current location');
-
+  // TODO: Needs spinner/loading logic and/or disable button while loading
   const _getLocation = async () => {
-    console.log('_getLocation() ran')
     try {
       const { status } = await Permissions.askAsync(Permissions.LOCATION);
   
@@ -28,35 +23,21 @@ const TimeSheetForm = ({ route, navigation }) => {
       }
 
       const { coords } = await Location.getCurrentPositionAsync({});
-  
-      // TODO: remove console.log()
+
       navigation.navigate('LocationConfirmation', { coords, type });
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   }
 
-  let spinner = (
-    <ActivityIndicator
-      size="large"
-      color="#c0392b"
-      style={styles.activity}
-    />
-  );
-  if (loading === false) {
-    spinner = null;
-  }
-
   return (
-    <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
+    <SafeAreaView style={styles.container}>
       <LoadLocationImage />
-      {spinner}
       <TouchableOpacity
-        disabled={disabled}
         style={styles.button}
         onPress={_getLocation}
       >
-        <Text style={styles.buttonText}>{buttonText}</Text>
+        <Text style={styles.buttonText}>Press to get your current location</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -82,12 +63,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#c0392b',
     textAlign: 'center',
-  },
-  activity: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    zIndex: 100,
   },
 });
 

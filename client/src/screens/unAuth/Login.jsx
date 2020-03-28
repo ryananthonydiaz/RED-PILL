@@ -11,11 +11,12 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const client = useApolloClient();
-  const [ login, { loading, error } ] = useMutation(loginMutation);
+  const [ login, { } ] = useMutation(loginMutation);
 
   const mailIcon = (
     <AntDesign name="mail" size={20} style={{ color: 'white', margin: 0}} />
   );
+
   const lockIcon = (
     <AntDesign name="lock" size={20} style={{ color: 'white', padding: 0 }} />
   );
@@ -23,11 +24,23 @@ const Login = ({ navigation }) => {
   const onSubmit = async (email, password) => {
     try {
       const { data: { login: { token, user } } } = await login({ variables: { email, password } });
+
       await AsyncStorage.setItem('token', token);
+
       client.writeData({ data: { id: token } });
+
       navigation.navigate('UserDashboard');
     } catch (error) {
-      console.log(error);
+      const err = error.toString();
+      
+      if (err.includes('USER_NOT_FOUND')) {
+        console.log('We had trouble finding you. Please make sure your email/password are correct');
+      } else if (err.includes('INVALID_PASSWORD')) {
+        console.log('Whoops, something went wrong. Please try again.');
+      } else {
+        console.log('Please try again.');
+      }
+
     }
   }
 

@@ -14,7 +14,7 @@ import Map from '../../../components/Map';
 const TimeSheetSubmitted = ({ route, navigation }) => {
   const { locationId, formattedDate } = route.params;
 
-  const { loading, data } = useQuery(locationDetailQuery, { variables: { locationId: locationId } });
+  const { loading, data, error } = useQuery(locationDetailQuery, { variables: { locationId: locationId } });
 
   if (loading === true) {
     return (
@@ -24,6 +24,15 @@ const TimeSheetSubmitted = ({ route, navigation }) => {
     );
   }
 
+  if (error) {
+    // TODO: remove console.log()
+    console.log(error);
+    return (
+      <View style={styles.container}>
+        <Text>An Error Occurred</Text>
+      </View>
+    );
+  }
   let map;
   let time;
   let formattedType;

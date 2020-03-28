@@ -14,12 +14,21 @@ const AdminLogin = ({ navigation }) => {
   const onSubmit = async (email, password) => {
     try {
       const { data: { adminLogin: { token, user } } } = await adminLogin({ variables: { email, password } });
+
       await AsyncStorage.setItem('token', token);
+
       navigation.navigate('AdminDashboard');
     } catch (error) {
       const err = error.toString();
+
       if (err.includes('USER_NOT_ADMIN')) {
-        console.log('This is for admins only. Please login in on Employee Login')
+        console.log('This is for admins only. Please login in on Employee Login');
+      } else if (err.includes('USER_NOT_FOUND')) {
+        console.log('We had trouble finding you. Please make sure your email/password are correct');
+      } else if (err.includes('INVALID_PASSWORD')) {
+        console.log('Whoops, something went wrong. Please try again.')
+      } else {
+        console.log('Please try again.');
       }
     }
   };

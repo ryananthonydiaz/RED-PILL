@@ -35,6 +35,13 @@ const LocationConfirmation = ({ route, navigation }) => {
         formattedDate,
       });
     } catch (error) {
+      const err = error.toString();
+
+      if (err.includes('NO_AUTH_HEADER') || err.includes('AUTHENTICATION_REQUIRED')) {
+        console.log('No Auth Header push user to login screen.');
+      } else {
+        console.log('An error occurred while submitting time/locaiton.');
+      }
       
     }
   }
