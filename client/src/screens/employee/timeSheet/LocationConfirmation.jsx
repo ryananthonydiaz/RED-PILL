@@ -4,7 +4,7 @@ import { createLocationMutation } from '../../../apollo/server/MutationTags';
 import { format } from 'date-fns';
 import { SafeAreaView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Map from '../../../components/Map';
-import ConfirmationModal from './ConfirmationModal';
+import ConfirmationModal from '../../../components/ConfirmationModal';
 
 const LocationConfirmation = ({ route, navigation }) => {
   const { params: { coords, type } } = route;

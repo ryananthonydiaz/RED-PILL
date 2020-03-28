@@ -17,7 +17,10 @@ const AdminLogin = ({ navigation }) => {
       await AsyncStorage.setItem('token', token);
       navigation.navigate('AdminDashboard');
     } catch (error) {
-      console.log(error);
+      const err = error.toString();
+      if (err.includes('USER_NOT_ADMIN')) {
+        console.log('This is for admins only. Please login in on Employee Login')
+      }
     }
   };
 
