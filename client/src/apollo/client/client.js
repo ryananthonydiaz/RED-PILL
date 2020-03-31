@@ -6,11 +6,9 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { setContext } from 'apollo-link-context';
 import { withClientState } from 'apollo-link-state';
 import { AsyncStorage } from 'react-native';
-import resolvers from './resolvers';
-import defaults from './Defaults';
 
 const cache = new InMemoryCache();
-const stateLink = withClientState({ cache, resolvers, defaults });
+const stateLink = withClientState({ cache });
 
 const authLink = setContext(async (_, { headers, ...rest }) => {
   const token = await AsyncStorage.getItem('token');
@@ -24,7 +22,7 @@ const authLink = setContext(async (_, { headers, ...rest }) => {
   }
 });
 
-const httpLink = authLink.concat(new HttpLink({ uri: 'http://192.168.1.39:5000/' }));
+const httpLink = authLink.concat(new HttpLink({ uri: 'https://reddot-api-prod.herokuapp.com/' }));
 
 const client = new ApolloClient({
   cache,

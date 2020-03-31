@@ -48,8 +48,4 @@ const UserDashboard = () => {
   );
 }
 
-export const UserDashboardOptions = {
-  header: () => null,
-}
-
 export default UserDashboard;

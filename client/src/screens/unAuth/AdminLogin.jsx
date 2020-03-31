@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { adminLoginMutation } from '../../apollo/server/MutationTags';
 import { AsyncStorage } from 'react-native';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -42,8 +42,7 @@ const AdminLogin = ({ navigation }) => {
   );
 
   return (
-    <>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
 
         <Text style={styles.header}>ADMIN LOGIN</Text>
 
@@ -82,8 +81,7 @@ const AdminLogin = ({ navigation }) => {
           <Text style={styles.linkText}>Not an admin? Press here.</Text>
         </TouchableOpacity>
 
-      </View>
-    </>
+      </SafeAreaView>
   );
 }
 
@@ -107,12 +105,6 @@ const styles = StyleSheet.create({
   input: {
     color: 'white',
     padding: 15,
-  },
-  errorMessage: {
-    fontSize: 16,
-    color: 'red',
-    marginLeft: 15,
-    marginTop: 15,
   },
   button: {
     borderColor: 'white',

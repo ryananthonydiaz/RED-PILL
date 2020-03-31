@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { Context as UserContext } from '../../context/UserContext';
 import { useMutation } from '@apollo/react-hooks';
 import { loginMutation } from '../../apollo/server/MutationTags';
-import { useApolloClient } from '@apollo/react-hooks';
-import { AsyncStorage } from 'react-native';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const client = useApolloClient();
+  const { setUser } = useContext(UserContext);
   const [ login, { } ] = useMutation(loginMutation);
 
   const mailIcon = (
@@ -24,13 +23,11 @@ const Login = ({ navigation }) => {
   const onSubmit = async (email, password) => {
     try {
       const { data: { login: { token, user } } } = await login({ variables: { email, password } });
-
-      await AsyncStorage.setItem('token', token);
-
-      client.writeData({ data: { id: token } });
+      setUser({ token, user });
 
       navigation.navigate('UserDashboard');
     } catch (error) {
+      // TODO: Insert Uniform error modal
       const err = error.toString();
       
       if (err.includes('USER_NOT_FOUND')) {
@@ -38,6 +35,7 @@ const Login = ({ navigation }) => {
       } else if (err.includes('INVALID_PASSWORD')) {
         console.log('Whoops, something went wrong. Please try again.');
       } else {
+        console.log(error)
         console.log('Please try again.');
       }
 
@@ -45,8 +43,7 @@ const Login = ({ navigation }) => {
   }
 
   return (
-    <>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
 
         <Text style={styles.header}>LOGIN</Text>
 
@@ -84,8 +81,8 @@ const Login = ({ navigation }) => {
         <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('AdminLogin')}>
           <Text style={styles.linkText}>Are you an admin? Press here.</Text>
         </TouchableOpacity>
-      </View>
-    </>
+
+      </SafeAreaView>
   );
 }
 

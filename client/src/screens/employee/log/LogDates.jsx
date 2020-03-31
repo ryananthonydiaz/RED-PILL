@@ -1,31 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context as UserContext } from '../../../context/UserContext';
 import { locationDatesQuery } from '../../../apollo/server/QueryTags';
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import { format, parse } from 'date-fns';
 import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
 const Log = ({ route, navigation }) => {
-  const idQuery = gql`
-    query {
-      id @client
-    }
-  `;
+  const { state: { token, user } } = useContext(UserContext);
 
-  const { loading, data: { id: userId } } = useQuery(idQuery);
+  const { loading, data } = useQuery(locationDatesQuery, { variables: { id: token } });
+  if (loading === true) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
+    );
+  }
 
-  const { loading: datesLoading, data } = useQuery(locationDatesQuery, { variables: { id: userId } });
-
-    if (loading === true || datesLoading === true) {
-      return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color="#fff" />
-        </View>
-      );
-    }
-
-  contentToDisplay = (
+  const contentToDisplay = (
     <FlatList
     style={{ width: '100%' }}
     data={data.locationDates}
@@ -63,7 +56,8 @@ const Log = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Submitted Time Sheets</Text>
+      <Text style={styles.header}>Welcome, {user.name}</Text>
+      <Text style={styles.header}>Here are your Submitted Time Sheets</Text>
       {contentToDisplay}
     </View>
   );
