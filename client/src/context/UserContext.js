@@ -28,26 +28,39 @@ const authReducer = (state, action) => {
   }
 };
 
-const setUser = (dispatch) => async ({ token, user }) => {
+const setUser = (dispatch) => async (navigation, { token, user }) => {
     try {
       await AsyncStorage.setItem('token', token);
+
       dispatch({ type: 'SET_TOKEN', token });
-      dispatch({ type: 'SET_USER', user})
+      dispatch({ type: 'SET_USER', user});
+      if (!isNil(token) && user.role === 'EMPLOYEE') {
+        navigation.navigate('UserDashboard');
+      } else if (!isNil(token) && user.role === 'ADMIN') {
+        navigation.navigate('AdminDashboard');
+      } else {
+        throw new Error();
+      }
     } catch (error) {}
   };
 
-export const signOut = (dispatch) => async () => {
-  await AsyncStorage.removeItem('token');
-  dispatch({ type: 'SIGN_OUT' });
-  navigate('loginFlow');
+export const signOut = (dispatch) => async (navigation) => {
+  try {
+    await AsyncStorage.removeItem('token');
+    dispatch({ type: 'SIGN_OUT' });
+    navigation.navigate('LoginFlow');
+  } catch (error) {
+    // TODO: remove console.log()
+    console.log(`error from signOut: ${JSON.stringify(error)}`)
+  }
 };
 
-export const tryLocalSignIn = (dispatch) => async () => {
+export const attemptLocalSignIn = (dispatch) => async (navigation) => {
   const token = await AsyncStorage.getItem('token');
 
   if (!isNil(token)) {
-    dispatch({ type: 'SIGN', payload: token });
-    navigate('TrackList');
+    dispatch({ type: 'SET_TOKEN', token });
+    navigation.navigate('UserDashboard', { screen: 'LogHistoryFlow' });
   } else {
     navigate('loginFlow');
   }
@@ -58,13 +71,10 @@ export const { Provider, Context } = createUserContext(
   {
     setUser,
     signOut,
-    tryLocalSignIn,
+    attemptLocalSignIn,
   },
   {
     token: null,
-    user: {
-      name: '',
-      role: '',
-    }
+    user: {}
   },
 );

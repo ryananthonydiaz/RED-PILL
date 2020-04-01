@@ -1,30 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Asset } from 'expo-asset';
+import { AppLoading } from 'expo';
 import ApolloProvider, { client } from './src/apollo/client/client';
+import { Provider as UserProvider } from './src/context/UserContext';
 import Routes from './src/routes/Routes';
 
-// const initData = () => {
-//   client.writeData({
-//     data: {
-//       authToken: {
-//         __typename: 'Token',
-//         id: '',
-//       },
-//       user: {
-//         __typename: 'User',
-//         id: '',
-//         name: '',
-//         role: '',
-//       },
-//     },
-//   })
-// }
+export default () => {
+  const [isReady, setIsReady] = useState(false);
 
-// initData();
-// client.onResetStore(async () => initData());
-// client.onClearStore(async () => initData());
+cacheImages = (images) => {
+  return images.map(image => {
+    if (typeof image === 'string') {
+      return Image.prefetch(image);
+    } else {
+      return Asset.fromModule(image).downloadAsync();
+    }
+  });
+}
 
-export default () => (
-  <ApolloProvider client={client}>
-    <Routes/>
-  </ApolloProvider>
-);
+_loadAssetsAsync = async () => {
+  const imageAssets = cacheImages([
+    require('./src/assets/splash.jpg'),
+    require('./src/assets/idea.png'),
+  ]);
+
+  await Promise.all([...imageAssets]);
+  setIsReady(true);
+}
+
+if (isReady === false) {
+  return (
+    <AppLoading
+      startAsync={_loadAssetsAsync}
+      onFinish={() => setIsReady(true)}
+      onError={console.warn}
+    />
+  );
+}
+  return (
+    <ApolloProvider client={client}>
+      <UserProvider>
+        <Routes/>
+      </UserProvider>
+    </ApolloProvider>
+  );
+};

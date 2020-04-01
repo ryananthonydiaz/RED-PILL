@@ -73,7 +73,44 @@ const LogEvents = ({ route, navigation }) => {
     <View style={styles.container}>
       <Text style={styles.header}>Your Time Sheet for:</Text>
       <Text style={styles.subHeader}>{formattedDate}</Text>
-      {contentToDisplay}
+      <FlatList
+        style={{ width: '100%' }}
+        data={data.locationTypes}
+        keyExtractor={(item) => item.id}
+        renderItem={
+          ({ item }) => {
+            let type;
+            if (item.type === 'CLOCK_IN') {
+              type = 'Clock In Details';
+            } else if (item.type === 'LUNCH_START') {
+              type = 'Lunch Start Details';
+            } else if (item.type === 'LUNCH_END') {
+              type = 'Lunch End Details';
+            } else {
+              type = 'Clock Out Details';
+            }
+    
+            return (
+              <TouchableOpacity
+                onPress={
+                  () => {
+                    navigation.navigate('LogEventDetails',
+                      { locationId: item.id, formattedDate }
+                    )
+                  }
+                }
+              >
+                <ListItem
+                  title={type}
+                  titleStyle={styles.listTitle}
+                  containerStyle={styles.listItem}
+                  chevron
+                />
+              </TouchableOpacity>
+            );
+          }
+        }
+      />
     </View>
   );
 }

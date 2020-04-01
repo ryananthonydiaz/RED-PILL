@@ -1,10 +1,9 @@
 import React from 'react';
-import { Provider as UserProvider } from '../context/UserContext';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import UserDashboard from './UserDashboard';
 import AdminDashboard from './AdminDashboard';
-import UnAuth from './UnAuth';
+import LoginFlow from './LoginFlow';
 
 const Routes = () => {
   const Stack = createStackNavigator();
@@ -12,12 +11,11 @@ const Routes = () => {
   const options = { header: () => null }
 
   return (
-    <UserProvider>
       <NavigationContainer>
-        <Navigator initialRouteName="UnAuth" options={options}>
+        <Navigator>
           <Screen
-            name="UnAuth"
-            component={UnAuth}
+            name="LoginFlow"
+            component={LoginFlow}
             options={options}
           />
           <Screen
@@ -32,7 +30,6 @@ const Routes = () => {
           />
         </Navigator>
       </NavigationContainer>
-    </UserProvider>
   );
 }
 

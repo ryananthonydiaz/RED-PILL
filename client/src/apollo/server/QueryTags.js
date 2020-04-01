@@ -35,3 +35,12 @@ export const locationDetailQuery = gql`
     }
   }
 `;
+
+export const userQuery = gql`
+  query UserQuery {
+    user {
+      name
+      role
+    }
+  }
+`;

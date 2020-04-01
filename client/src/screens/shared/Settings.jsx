@@ -1,21 +1,16 @@
-import React from 'react';
-import { AsyncStorage } from 'react-native';
+import React, { useContext } from 'react';
+import { Context as UserContext } from '../../context/UserContext';
 import { SafeAreaView, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import HeroImage from '../../assets/settings.jsx';
 
 const Settings = ({ navigation }) => {
-  const _logOut = async () => {
-    await AsyncStorage.removeItem('token');
-    navigation.navigate('Login');
-  }
+  const { signOut } = useContext(UserContext);
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Sign Out</Text>
       <HeroImage />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={_logOut}
-      >
+      <TouchableOpacity style={styles.button} onPress={() => signOut(navigation)}>
         <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>
     </SafeAreaView>
